@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.todo_list_item.view.*
 
 class MainActivity : AppCompatActivity() {
 
-    val myStringArray = arrayListOf<String>("Test1", "Test2")
+    val myStringArray = arrayListOf<String>("todo1", "todo2")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +20,12 @@ class MainActivity : AppCompatActivity() {
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             // Do something in response to the click
-            Toast.makeText(this, "TextView: ${(view as TextView)?.text}, position: $position, id: $id", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "TextView: ${(view as TextView)?.text}, position: $position, id: $id", Toast.LENGTH_SHORT).show()
+        }
+
+        val addButton = findViewById<Button>(R.id.addButton)
+        addButton.setOnClickListener {
+            adapter.add("todo${adapter.count+1}")
         }
     }
 }
