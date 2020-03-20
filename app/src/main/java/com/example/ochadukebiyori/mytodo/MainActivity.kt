@@ -1,5 +1,6 @@
 package com.example.ochadukebiyori.mytodo
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,13 +26,36 @@ class MainActivity : AppCompatActivity() {
             // 編集画面を表示する
             val editIntent = Intent(this, EditItemActivity::class.java).apply {
                 this.putExtra("title", view.text)
+                this.putExtra("position", position)
             }
-            startActivity(editIntent)
+            startActivityForResult(editIntent, 1)
         }
 
         val addButton = findViewById<Button>(R.id.addButton)
         addButton.setOnClickListener {
             adapter.add("todo${adapter.count+1}")
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1
+            && resultCode == Activity.RESULT_OK
+            && data != null)
+        {
+            val text = data.getStringExtra("title") ?: ""
+            val position = data.getIntExtra("position", -1)
+
+            // position が正しく取得できない場合は、処理を終了する
+            if (position == -1) {
+                return
+            }
+
+            val listView = findViewById<ListView>(R.id.todoList)
+            val adapter = listView.adapter as ArrayAdapter<String>
+            adapter.remove(adapter.getItem(position))
+            adapter.insert(text, position)
         }
     }
 }

@@ -7,19 +7,21 @@
     tools:context=".EditItemActivity">
 
 
-    <TextView
+    <EditText
         android:id="@+id/itemTitleText"
-        android:layout_width="132dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Text"
         android:textSize="32sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/savedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -27,4 +29,5 @@
         android:text="Saved"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
