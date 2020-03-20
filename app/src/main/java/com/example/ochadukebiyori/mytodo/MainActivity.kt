@@ -1,9 +1,9 @@
 package com.example.ochadukebiyori.mytodo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
-import kotlinx.android.synthetic.main.todo_list_item.view.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +21,12 @@ class MainActivity : AppCompatActivity() {
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             // Do something in response to the click
             Toast.makeText(this, "TextView: ${(view as TextView)?.text}, position: $position, id: $id", Toast.LENGTH_SHORT).show()
+
+            // 編集画面を表示する
+            val editIntent = Intent(this, EditItemActivity::class.java).apply {
+                this.putExtra("title", view.text)
+            }
+            startActivity(editIntent)
         }
 
         val addButton = findViewById<Button>(R.id.addButton)
