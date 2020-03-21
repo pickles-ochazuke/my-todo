@@ -27,6 +27,19 @@ class EditItemActivity : AppCompatActivity() {
 
             result.putExtra("title", titleText.text.toString())
             result.putExtra("position", this.intent.getIntExtra("position", -1))
+            result.putExtra("event", "edit")
+
+            setResult(Activity.RESULT_OK, result)
+            finish()
+        }
+
+        // 削除ボタンの設定
+        val deletedButton = findViewById<Button>(R.id.deleteButton)
+        deletedButton.setOnClickListener {
+            val result = Intent()
+
+            result.putExtra("position", this.intent.getIntExtra("position", -1))
+            result.putExtra("event", "delete")
 
             setResult(Activity.RESULT_OK, result)
             finish()
