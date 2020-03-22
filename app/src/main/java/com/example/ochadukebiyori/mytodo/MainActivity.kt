@@ -44,18 +44,33 @@ class MainActivity : AppCompatActivity() {
             && resultCode == Activity.RESULT_OK
             && data != null)
         {
-            val text = data.getStringExtra("title") ?: ""
-            val position = data.getIntExtra("position", -1)
+            val event = data.getStringExtra("event") ?: ""
+            if (event == "edit") {
+                val text = data.getStringExtra("title") ?: ""
+                val position = data.getIntExtra("position", -1)
 
-            // position が正しく取得できない場合は、処理を終了する
-            if (position == -1) {
-                return
+                // position が正しく取得できない場合は、処理を終了する
+                if (position == -1) {
+                    return
+                }
+
+                val listView = findViewById<ListView>(R.id.todoList)
+                val adapter = listView.adapter as ArrayAdapter<String>
+                adapter.remove(adapter.getItem(position))
+                adapter.insert(text, position)
             }
+            else if (event == "delete") {
 
-            val listView = findViewById<ListView>(R.id.todoList)
-            val adapter = listView.adapter as ArrayAdapter<String>
-            adapter.remove(adapter.getItem(position))
-            adapter.insert(text, position)
+                val position = data.getIntExtra("position", -1)
+
+                if (position == -1) {
+                    return
+                }
+
+                val listView = findViewById<ListView>(R.id.todoList)
+                val adapter = listView.adapter as ArrayAdapter<String>
+                adapter.remove(adapter.getItem(position))
+            }
         }
     }
 }
