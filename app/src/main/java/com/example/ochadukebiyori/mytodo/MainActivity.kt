@@ -1,11 +1,14 @@
 package com.example.ochadukebiyori.mytodo
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,6 +17,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // アプリが保存したTodoリストを取得する
+        val pref = getSharedPreferences("MyTodo", Context.MODE_PRIVATE)
+        val json = pref.getString("todos", null)
+
+        if (json != null) {
+            myStringArray = Gson().fromJson(json, object: TypeToken<ArrayList<String>>() {}.type)
+        }
+
+        // 画面切り替えから復帰した場合
         if (savedInstanceState != null) {
             myStringArray = savedInstanceState.getStringArrayList("todos") ?: myStringArray
         }
@@ -86,5 +98,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         super.onSaveInstanceState(outState)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        val pref = getSharedPreferences("MyTodo", Context.MODE_PRIVATE)
+
+        pref.edit().putString("todos", Gson().toJson(myStringArray)).apply()
     }
 }
