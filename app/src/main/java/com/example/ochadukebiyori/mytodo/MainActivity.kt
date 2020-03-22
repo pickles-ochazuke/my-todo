@@ -4,14 +4,19 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 
 class MainActivity : AppCompatActivity() {
 
-    val myStringArray = arrayListOf<String>("todo1", "todo2")
+    var myStringArray = arrayListOf<String>("todo1", "todo2")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (savedInstanceState != null) {
+            myStringArray = savedInstanceState.getStringArrayList("todos") ?: myStringArray
+        }
         setContentView(R.layout.activity_main)
 
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myStringArray)
@@ -34,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val addButton = findViewById<Button>(R.id.addButton)
         addButton.setOnClickListener {
             adapter.add("todo${adapter.count+1}")
+            Log.d("MainActivity", "last: ${myStringArray.last()}")
         }
     }
 
@@ -72,5 +78,13 @@ class MainActivity : AppCompatActivity() {
                 adapter.remove(adapter.getItem(position))
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState?.run {
+            putStringArrayList("todos", myStringArray)
+        }
+
+        super.onSaveInstanceState(outState)
     }
 }
